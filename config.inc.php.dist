@@ -1,0 +1,13 @@
+<?php
+
+$config = [];
+
+// MySQL connection
+$config['expiry_db_host'] = '127.0.0.1';
+$config['expiry_db_name'] = 'vmail';
+$config['expiry_db_user'] = 'roundcube';
+$config['expiry_db_password'] = 'CHANGE_THIS_PASSWORD';
+
+// Password expiration settings
+$config['expiry_days'] = 90;
+$config['expiry_warning_days'] = 10;
