@@ -96,52 +96,25 @@ class iredmail_password_expiry extends rcube_plugin
                 '_action' => 'plugin.password',
             ]);
 
+            $change_password_link = html::a(
+                ['href' => $password_url],
+                'Please change it'
+            );
+
             if ($days_left <= 0) {
-                $message = 'Your password has expired. Please change it immediately.';
+                $message = 'Your password has expired. ' . $change_password_link . ' immediately.';
+                $type = 'error';
             } else {
                 $message = sprintf(
-                    'Your password will expire in %d day(s). Please change it.',
+                    'Your password will expire in %d day(s).' . $change_password_link . '.',
                     $days_left
                 );
+                $type = 'notice';
             }
 
-            $message = htmlspecialchars(
+            $this->rc->output->show_message(
                 $message,
-                ENT_QUOTES | ENT_SUBSTITUTE,
-                'UTF-8'
-            );
-
-            $password_url = htmlspecialchars(
-                $password_url,
-                ENT_QUOTES | ENT_SUBSTITUTE,
-                'UTF-8'
-            );
-
-            $html = '
-            <div id="iredmail-password-expiry"
-                 style="
-                    position:fixed;
-                    bottom:0;
-                    left:0;
-                    right:0;
-                    z-index:99999;
-                    padding:14px;
-                    background:#fff3cd;
-                    color:#664d03;
-                    border-top:1px solid #ffecb5;
-                    text-align:center;
-                 ">
-                <strong>' . $message . '</strong>
-                <a href="' . $password_url . '"
-                   style="margin-left:12px;">
-                    Change password
-                </a>
-            </div>';
-
-            $args['content'] = str_replace(
-                '</body>',
-                $html . '</body>',
-                $args['content']
+                $type
             );
 
         } catch (Throwable $e) {
